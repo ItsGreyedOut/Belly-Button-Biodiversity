@@ -57,7 +57,7 @@ function buildCharts(selectedPatientID) {
 
         Plotly.newPlot('bubbleDiv', data, layout);
 
-        // Plot Ggauge
+        // Plot Gauge
         var data = [
             {
                 domain: { x: [0, 1], y: [0, 1] },
