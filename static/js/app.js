@@ -1,4 +1,4 @@
-// FUNCTION #1 of 5
+// FUNCTION #1 of 5: Build Charts
 function buildCharts(selectedPatientID) {
     d3.json("samples.json").then(data => {
         console.log(data)
@@ -62,7 +62,7 @@ function buildCharts(selectedPatientID) {
             {
                 domain: { x: [0, 1], y: [0, 1] },
                 value: selectedPatientMetaData.wfreq,
-                title: { text: "Speed" },
+                title: { text: "Belly Button Washing Frequency" },
                 type: "indicator",
                 mode: "gauge+number",
                 delta: { reference: 400 },
@@ -75,23 +75,30 @@ function buildCharts(selectedPatientID) {
     })
 };
 
-// FUNCTION #2 of 5
+// FUNCTION #2 of 5: Demographic Info
 function populateDemographicInfo(selectedPatientID) {
     var demographicInfoBox = d3.select("#sample-metadata");
-    d3.json("samples.json").then(data => {
-        console.log(data)
-        var selectedPatientMetaData = data.metadata.filter(patientData => patientData.id == selectedPatientID)[0]
-    })
-}
+    d3.json("samples.json").then((data) => {
+      var MetaData = data.metadata;
+      var subject = MetaData.filter(
+        (sampleobject) => sampleobject.id == selectedPatientID
+      )[0];
+      var demographicInfoBox = d3.select("#sample-metadata");
+      demographicInfoBox.html("");
+      Object.entries(subject).forEach(([key, value]) => {
+        demographicInfoBox.append("h5").text(`${key}: ${value}`);
+      });
+    });
+  }
 
-// FUNCTION #3 of 5
+// FUNCTION #3 of 5: Option Change
 function optionChanged(selectedPatientID) {
     console.log(selectedPatientID);
     buildCharts(selectedPatientID);
     populateDemographicInfo(selectedPatientID);
 }
 
-// FUNCTION #4 of 5
+// FUNCTION #4 of 5: Populate Dropdown
 function populateDropdown() {
     var dropdown = d3.select("#selDataset")
     d3.json("samples.json").then(data => {
@@ -102,7 +109,7 @@ function populateDropdown() {
     })
 }
 
-// FUNCTION #5 of 5
+// FUNCTION #5 of 5: Startup Site Build
 function startupSiteBuild() {
     populateDropdown();
     d3.json("samples.json").then(data => {
